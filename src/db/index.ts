@@ -1,12 +1,12 @@
 import fs from 'fs'
 import { Sequelize } from 'sequelize'
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 
 import defineExercise from './exercise'
 import defineProgram from './program'
 import defineUser from './user'
 
-dotenv.config();
+dotenv.config()
 
 const sequelize: Sequelize = new Sequelize(process.env.DATABASE_URL || '', {
 	logging: false

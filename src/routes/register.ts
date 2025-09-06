@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 
-import { models } from '../../db'
+import { models } from '../db'
 
 const router = Router()
 
@@ -18,7 +18,7 @@ export default () => {
 				return res.status(400).json({ message: 'Email, password, and role are required' })
 			}
 
-			const existingUser = await User.findOne({ where: { email } });
+			const existingUser = await User.findOne({ where: { email } })
 			if (existingUser) {
 				return res.status(400).json({ message: 'User with this email already exists' })
 			}

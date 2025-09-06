@@ -1,7 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
-import { models } from '../../db'
+import { models } from '../db'
 
 const router = Router()
 
@@ -17,15 +18,24 @@ export default () => {
 					email: req.body.email
 				}
 			})
+			if (!user) {
+				return res.status(400).json({ message: 'User not found' })
+			}
 
-			const isValid = await bcrypt.compare(req.body.password, user.password);
+			const isValid = await bcrypt.compare(req.body.password, user.password)
 			if (!isValid) {
 				return res.status(400).json({ message: 'Wrong password' })
 			}
 
+			const token = jwt.sign(
+				{ id: user.id, role: user.role },   
+				process.env.JWT_SECRET || '',                         
+				{ expiresIn: '10h' }                 
+			)
+
 			return res.json({
-				email: user.email,
-				nick_name: user.nickName,
+				message: 'Login successful',
+				token,
 			})
 		} catch (error) {
 			console.error(error)
