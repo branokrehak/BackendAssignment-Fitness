@@ -1,5 +1,7 @@
 import { Sequelize, DataTypes, Model } from 'sequelize'
 
+import { CompletedExerciseModel } from './completed-exercise'
+
 export interface UserModel extends Model {
 	id: number
 	name: string
@@ -9,6 +11,7 @@ export interface UserModel extends Model {
 	age: number
 	role: 'USER' | 'ADMIN'
 	password: string
+	completed_exercises: CompletedExerciseModel[]
 }
 
 export default (sequelize: Sequelize, modelName: string) => {
@@ -46,6 +49,13 @@ export default (sequelize: Sequelize, modelName: string) => {
 			tableName: 'users'
 		}
 	)
+
+	UserModelCtor.associate = (models) => {
+        UserModelCtor.hasMany(models.CompletedExercise, {
+            foreignKey: 'userId',
+			as: 'completedExercises'
+        })
+    }
 
 	return UserModelCtor
 }

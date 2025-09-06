@@ -1,7 +1,13 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
-export default (req: Request, res: Response, next: NextFunction): void => {
+import { models } from '../db'
+
+const {
+	User
+} = models
+
+export default async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const authToken = req.headers.authorization
 
     if (!authToken) {
@@ -9,16 +15,30 @@ export default (req: Request, res: Response, next: NextFunction): void => {
         return
     }
 
-    jwt.verify(authToken, process.env.JWT_SECRET || '', (err, user: JwtPayload) => {
-        if (err) {
-            return res.status(400).json({ message: 'Invalid or expired token' })		
-        }
+    let decoded: JwtPayload
+    try {
+        decoded = jwt.verify(authToken, process.env.JWT_SECRET || '') as JwtPayload
+    } catch (_) {
+        res.status(400).json({ message: 'Invalid or expired token' })
+        return 
+    }
 
-        if (user.role !== 'ADMIN') {
-            return res.status(400).json({ message: 'Admin access required' })		
-        }
+    const user = await User.findByPk(decoded.id)
+    if (!user) {
+        res.status(404).json({ message: 'User not found' })
+        return
+    }
 
-        req.user = user
-        next()
-    })
+    if (user.role !== 'ADMIN') {
+        res.status(403).json({ message: 'Admin access required' })
+        return
+    }
+
+    req.user = {
+        id: user.id,
+        email: user.email,
+        role: user.role
+    }
+
+    next()
 }

@@ -21,9 +21,8 @@ export default () => {
             res.set('Expires', '0')
 
 			return res.json({
-				details: {
-					user
-				}
+				details: user,
+				message: 'User details'
 			})
 		} catch (error) {
 			console.error(error)

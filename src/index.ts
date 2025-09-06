@@ -14,7 +14,6 @@ import AdminUserDetailRouter from './routes/admin/user/detail'
 import AdminUserListRouter from './routes/admin/user/list'
 import AdminUserUpdateRouter from './routes/admin/user/update'
 
-import ExerciseListRouter from './routes/user/exercise/list'
 import ExerciseRemoveRouter from './routes/user/exercise/remove'
 import ExerciseTrackRouter from './routes/user/exercise/track'
 import ProfileRouter from './routes/user/profile'
@@ -37,7 +36,6 @@ app.use('/admin/user/detail', AdminUserDetailRouter())
 app.use('/admin/user/list', AdminUserListRouter())
 app.use('/admin/user/update', AdminUserUpdateRouter())
 
-app.use('/user/exercise/list', ExerciseListRouter())
 app.use('/user/exercise/remove', ExerciseRemoveRouter())
 app.use('/user/exercise/track', ExerciseTrackRouter())
 app.use('/user/profile', ProfileRouter())

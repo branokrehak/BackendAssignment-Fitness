@@ -6,7 +6,9 @@ import userMiddleware from '../../middleware/user.middleware'
 const router = Router()
 
 const {
-	User
+	User,
+	Exercise,
+	CompletedExercise
 } = models
 
 export default () => {
@@ -14,6 +16,19 @@ export default () => {
 		try {
 			const profile = await User.findOne({
                 attributes: ['name', 'surname', 'nickName', 'age'],
+				include: [
+					{
+						model: CompletedExercise,
+						as: 'completedExercises', 
+						attributes: ['completedAt', 'duration'], 
+						include: [
+							{
+								model: Exercise, 
+								attributes: ['name'],
+							}
+						]
+					}
+				],
                 where: { id: req.user?.id }
             })
 
@@ -22,7 +37,8 @@ export default () => {
             res.set('Expires', '0')
 
 			return res.json({
-				profile
+				profile,
+				message: 'Your profile details'
 			})
 		} catch (error) {
 			console.error(error)

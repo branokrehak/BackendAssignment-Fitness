@@ -30,7 +30,7 @@ export default () => {
 			const token = jwt.sign(
 				{ id: user.id, role: user.role },   
 				process.env.JWT_SECRET || '',                         
-				{ expiresIn: '10h' }                 
+				{ expiresIn: '999h' }                 
 			)
 
 			return res.json({

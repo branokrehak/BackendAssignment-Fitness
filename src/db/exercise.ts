@@ -42,6 +42,10 @@ export default (sequelize: Sequelize, modelName: string) => {
 				allowNull: false
 			},
 		})
+		ExerciseModelCtor.hasMany(models.CompletedExercise, {
+            foreignKey: 'exerciseId',
+			as: 'completedExercises'
+        })
 	}
 
 	return ExerciseModelCtor

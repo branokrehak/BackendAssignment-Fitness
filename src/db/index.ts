@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import defineExercise from './exercise'
 import defineProgram from './program'
 import defineUser from './user'
+import defineCompletedExercise from './completed-exercise'
 
 dotenv.config()
 
@@ -17,11 +18,13 @@ sequelize.authenticate().catch((e: any) => console.error(`Unable to connect to t
 const Exercise = defineExercise(sequelize, 'exercise')
 const Program = defineProgram(sequelize, 'program')
 const User = defineUser(sequelize, 'user')
+const CompletedExercise = defineCompletedExercise(sequelize, 'completed_exercise')
 
 const models = {
 	Exercise,
 	Program,
-	User
+	User,
+	CompletedExercise
 }
 type Models = typeof models
 
