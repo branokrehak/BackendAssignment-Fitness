@@ -12,7 +12,7 @@ const {
 } = models
 
 export default () => {
-	router.post('/', exerciseAdminValidate, adminMiddleware, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.post('/', localizationMiddleware, exerciseAdminValidate, adminMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
             const { difficulty, name, programID } = req.body
 

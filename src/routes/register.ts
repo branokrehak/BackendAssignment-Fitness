@@ -12,7 +12,7 @@ const {
 } = models
 
 export default () => {
-	router.post('/', registerValidate, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.post('/', localizationMiddleware, registerValidate, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const { name, surname, nickName, email, age, role, password } = req.body
 

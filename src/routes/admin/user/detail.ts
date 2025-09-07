@@ -11,7 +11,7 @@ const {
 } = models
 
 export default () => {
-	router.get('/:id', adminMiddleware, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.get('/:id', localizationMiddleware, adminMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const user = await User.findOne({
 				where: { id: req.params.id }

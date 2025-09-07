@@ -13,7 +13,7 @@ const {
 } = models
 
 export default () => {
-	router.post('/', loginValidate, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.post('/', localizationMiddleware, loginValidate, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const user = await User.findOne({ where: { email: req.body.email } })
 			if (!user) {

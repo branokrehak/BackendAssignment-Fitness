@@ -11,7 +11,7 @@ const {
 } = models
 
 export default () => {
-	router.get('/', userMiddleware, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.get('/', localizationMiddleware, userMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const users = await User.findAll({
                 attributes: ['id', 'nickName']

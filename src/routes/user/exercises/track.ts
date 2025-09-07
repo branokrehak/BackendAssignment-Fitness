@@ -11,7 +11,7 @@ const {
 } = models
 
 export default () => {
-	router.post('/:id', userMiddleware, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.post('/:id', localizationMiddleware, userMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const { completedAt, duration } = req.body
 			const exerciseId = req.params.id

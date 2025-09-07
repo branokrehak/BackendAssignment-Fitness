@@ -11,7 +11,7 @@ const {
 } = models
 
 export default () => {
-	router.delete('/:id', userMiddleware, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.delete('/:id', localizationMiddleware, userMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const deletedCount = await CompletedExercise.destroy({
 				where: { id: req.params.id },

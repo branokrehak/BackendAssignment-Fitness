@@ -12,7 +12,7 @@ const {
 } = models
 
 export default () => {
-	router.put('/:id', userAdminValidate, adminMiddleware, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.put('/:id', localizationMiddleware, userAdminValidate, adminMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const { name, surname, nickName, age, role } = req.body
 
