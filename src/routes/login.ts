@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 
 import { models } from '../db'
 import { loginValidate } from '../middleware/validate.middleware'
+import localizationMiddleware from '../middleware/localization.middleware'
 
 const router = Router()
 
@@ -12,16 +13,16 @@ const {
 } = models
 
 export default () => {
-	router.post('/', loginValidate, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.post('/', loginValidate, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const user = await User.findOne({ where: { email: req.body.email } })
 			if (!user) {
-				return res.status(400).json({ message: 'User not found' })
+				return res.status(400).json({ message: req.translate('userNotFound') })
 			}
 
 			const isValid = await bcrypt.compare(req.body.password, user.password)
 			if (!isValid) {
-				return res.status(400).json({ message: 'Wrong password' })
+				return res.status(400).json({ message: req.translate('wrongPassword') })
 			}
 
 			const token = jwt.sign(
@@ -31,12 +32,12 @@ export default () => {
 			)
 
 			return res.json({
-				message: 'Login successful',
+				message: req.translate('userLoggedIn'),
 				token
 			})
 		} catch (error) {
 			console.error(error)
-			return res.status(400).json({ message: 'Internal server error' })		
+			return res.status(400).json({ message: req.translate('internalError') })		
 		}
 	})
 

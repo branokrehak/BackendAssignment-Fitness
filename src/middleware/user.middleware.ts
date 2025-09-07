@@ -1,14 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
-declare global {
-    namespace Express {
-        interface Request {
-            user?: JwtPayload
-        }
-    }
-}
-
 export default (req: Request, res: Response, next: NextFunction) => {
     const authToken = req.headers.authorization
 

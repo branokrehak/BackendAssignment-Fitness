@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express'
 
 import { models } from '../../db'
 import userMiddleware from '../../middleware/user.middleware'
+import localizationMiddleware from '../../middleware/localization.middleware'
 
 const router = Router()
 
@@ -12,7 +13,7 @@ const {
 } = models
 
 export default () => {
-	router.get('/', userMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.get('/', userMiddleware, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const profile = await User.findOne({
                 attributes: ['name', 'surname', 'nickName', 'age'],
@@ -37,12 +38,12 @@ export default () => {
             res.set('Expires', '0')
 
 			return res.json({
-				message: 'Your profile details',
+				message: req.translate('profileDetails'),
 				profile
 			})
 		} catch (error) {
 			console.error(error)
-			return res.status(400).json({ message: 'Internal server error' })		
+			return res.status(400).json({ message: req.translate('internalError') })		
 		}
 	})
 

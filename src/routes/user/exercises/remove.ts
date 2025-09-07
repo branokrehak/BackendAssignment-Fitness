@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express'
 
 import { models } from '../../../db'
 import userMiddleware from '../../../middleware/user.middleware'
+import localizationMiddleware from '../../../middleware/localization.middleware'
 
 const router = Router()
 
@@ -10,7 +11,7 @@ const {
 } = models
 
 export default () => {
-	router.delete('/:id', userMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.delete('/:id', userMiddleware, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const deletedCount = await CompletedExercise.destroy({
 				where: { id: req.params.id },
@@ -18,13 +19,13 @@ export default () => {
 			})
 			
 			if (deletedCount === 0) {
-				return res.status(400).json({ message: 'Exercise not found' })
+				return res.status(400).json({ message: req.translate('exerciseNotFound') })
 			}
 
-			return res.json({ message: 'Exercise removed successfully' })
+			return res.json({ message: req.translate('exerciseRemoved') })
 		} catch (error) {
 			console.error(error)
-			return res.status(400).json({ message: 'Internal server error' })		
+			return res.status(400).json({ message: req.translate('internalError') })		
 		}
 	})
 

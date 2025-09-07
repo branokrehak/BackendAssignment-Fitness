@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express'
 import { Op } from 'sequelize'
 
 import { models } from '../db'
+import localizationMiddleware from '../middleware/localization.middleware'
 
 const router = Router()
 
@@ -18,12 +19,11 @@ type QueryParams = {
 }
 
 export default () => {
-	router.get('/', async (req: Request<{}, any, any, QueryParams>, res: Response, _next: NextFunction): Promise<any> => {
+	router.get('/', localizationMiddleware, async (req: Request<{}, any, any, QueryParams>, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const page = req.query.page as any as number
 			const limit = req.query.limit as any as number
 			const offset = (page - 1) * limit
-
 			const where: { programID?: string, name?: { [Op.iLike]: string } } = {}
 
 			if (req.query.programID) {
@@ -33,7 +33,7 @@ export default () => {
 			if (req.query.search) {
 				where.name = { [Op.iLike]: `%${req.query.search}%` }
 			}
-	
+			
 			const exercises = await Exercise.findAll({
 				include: [{
 					model: Program
@@ -44,12 +44,12 @@ export default () => {
 			})
 	
 			return res.json({
-				message: 'List of exercises',
+				message: req.translate('exerciseList'),
 				data: exercises
 			})
 		} catch (error) {
 			console.error(error)
-			return res.status(400).json({ message: 'Internal server error' })		
+			return res.status(400).json({ message: req.translate('internalError') })		
 		}
 	})
 

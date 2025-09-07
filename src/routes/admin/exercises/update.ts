@@ -3,6 +3,7 @@ import { Router, Request, Response, NextFunction } from 'express'
 import { models } from '../../../db'
 import adminMiddleware from '../../../middleware/admin.middleware'
 import { exerciseAdminValidate } from '../../../middleware/validate.middleware'
+import localizationMiddleware from '../../../middleware/localization.middleware'
 
 const router = Router()
 
@@ -11,7 +12,7 @@ const {
 } = models
 
 export default () => {
-	router.put('/:id', exerciseAdminValidate, adminMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.put('/:id', exerciseAdminValidate, localizationMiddleware, adminMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
             const { difficulty, name, programID } = req.body
 
@@ -24,13 +25,13 @@ export default () => {
 			})
 
 			if (updatedCount === 0) {
-				return res.status(400).json({ message: 'Exercise not found' })
+				return res.status(400).json({ message: req.translate('exerciseNotFound') })
 			}
 
-			return res.json({ message: 'Exercise updated successfully' })
+			return res.json({ message: req.translate('exerciseUpdated') })
 		} catch (error) {
 			console.error(error)
-			return res.status(400).json({ message: 'Internal server error' })		
+			return res.status(400).json({ message: req.translate('internalError') })		
 		}
 	})
 

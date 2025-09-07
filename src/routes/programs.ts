@@ -6,6 +6,7 @@ import {
 } from 'express'
 
 import { models } from '../db'
+import localizationMiddleware from '../middleware/localization.middleware'
 
 const router = Router()
 
@@ -14,17 +15,17 @@ const {
 } = models
 
 export default () => {
-	router.get('/', async (_req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.get('/', localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const programs = await Program.findAll()
 			
 			return res.json({
-				message: 'List of programs',
+				message: req.translate('programList'),
 				data: programs
 			})
 		} catch (error) {
 			console.error(error)
-			return res.status(400).json({ message: 'Internal server error' })		
+			return res.status(400).json({ message: req.translate('internalError') })		
 		}
 	})
 

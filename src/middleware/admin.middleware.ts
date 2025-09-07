@@ -11,7 +11,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const authToken = req.headers.authorization
 
     if (!authToken) {
-        res.status(400).json({ message: 'Auth token is missing' })		
+        res.status(400).json({ message: req.translate('tokenMissing') })		
         return
     }
 
@@ -19,18 +19,18 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     try {
         decoded = jwt.verify(authToken, process.env.JWT_SECRET || '') as JwtPayload
     } catch (_) {
-        res.status(400).json({ message: 'Invalid or expired token' })
+        res.status(400).json({ message: req.translate('invalidToken') })
         return 
     }
 
     const user = await User.findByPk(decoded.id)
     if (!user) {
-        res.status(400).json({ message: 'User not found' })
+        res.status(400).json({ message: req.translate('userNotFound') })
         return
     }
 
     if (user.role !== 'ADMIN') {
-        res.status(400).json({ message: 'Admin access required' })
+        res.status(400).json({ message: req.translate('adminAccessRequired') })
         return
     }
 

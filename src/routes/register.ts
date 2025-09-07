@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 
 import { models } from '../db'
 import { registerValidate } from '../middleware/validate.middleware'
+import localizationMiddleware from '../middleware/localization.middleware'
 
 const router = Router()
 
@@ -11,13 +12,13 @@ const {
 } = models
 
 export default () => {
-	router.post('/', registerValidate, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.post('/', registerValidate, localizationMiddleware, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const { name, surname, nickName, email, age, role, password } = req.body
 
 			const existingUser = await User.findOne({ where: { email } })
 			if (existingUser) {
-				return res.status(400).json({ message: 'User with this email already exists' })
+				return res.status(400).json({ message: req.translate('emailTaken') })
 			}
 
 			const hashedPassword = await bcrypt.hash(password, 10)
@@ -33,7 +34,7 @@ export default () => {
 			})
 
 			return res.json({
-				message: 'User registered successfully',
+				message: req.translate('userRegistered'),
 				id: newUser.id,
 				name: newUser.name,
 				surname: newUser.surname,
@@ -44,7 +45,7 @@ export default () => {
 			})
 		} catch (error) {
 			console.error(error)
-			return res.status(400).json({ message: 'Internal server error' })		
+			return res.status(400).json({ message: req.translate('internalError') })		
 		}
 	})
 
