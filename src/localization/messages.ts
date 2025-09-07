@@ -4,7 +4,7 @@ export const messages = {
         exerciseList: 'List of exercises',
         userList: 'List of users',
         profileDetails: 'User profile details',
-        exerciseNotFound: 'Exercise not found',
+        exerciseNotFound: 'Exercise not found', 
         exerciseCreated: 'Exercise created successfully',
         exerciseRemoved: 'Exercise removed successfully',
         exerciseTracked: 'Exercise tracked successfully',

@@ -25,7 +25,7 @@ export default () => {
 			return res.json({ message: req.translate('exerciseRemoved') })
 		} catch (error) {
 			console.error(error)
-			return res.status(400).json({ message: req.translate('internalError') })		
+			return res.status(500).json({ message: req.translate('internalError') })		
 		}
 	})
 
