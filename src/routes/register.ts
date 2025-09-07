@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 
 import { models } from '../db'
+import { registerValidate } from '../middleware/validate.middleware'
 
 const router = Router()
 
@@ -10,13 +11,9 @@ const {
 } = models
 
 export default () => {
-	router.post('/', async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.post('/', registerValidate, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
 			const { name, surname, nickName, email, age, role, password } = req.body
-
-			if (!email || !password || !role) {
-				return res.status(400).json({ message: 'Email, password, and role are required' })
-			}
 
 			const existingUser = await User.findOne({ where: { email } })
 			if (existingUser) {
@@ -36,14 +33,14 @@ export default () => {
 			})
 
 			return res.json({
+				message: 'User registered successfully',
 				id: newUser.id,
 				name: newUser.name,
 				surname: newUser.surname,
 				nickName: newUser.nickName,
 				email: newUser.email,
 				age: newUser.age,
-				role: newUser.role,
-				message: 'User registered successfully',
+				role: newUser.role
 			})
 		} catch (error) {
 			console.error(error)

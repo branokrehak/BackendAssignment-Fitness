@@ -19,8 +19,8 @@ export default () => {
             res.set('Expires', '0')
 
 			return res.json({
-				list: users,
-				message: 'List of all users'
+				message: 'List of all users',
+				list: users
 			})
 		} catch (error) {
 			console.error(error)

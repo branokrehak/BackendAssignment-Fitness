@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import { models } from '../db'
+import { loginValidate } from '../middleware/validate.middleware'
 
 const router = Router()
 
@@ -11,13 +12,9 @@ const {
 } = models
 
 export default () => {
-	router.post('/', async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
+	router.post('/', loginValidate, async (req: Request, res: Response, _next: NextFunction): Promise<any> => {
 		try {
-			const user = await User.findOne({
-				where: {
-					email: req.body.email
-				}
-			})
+			const user = await User.findOne({ where: { email: req.body.email } })
 			if (!user) {
 				return res.status(400).json({ message: 'User not found' })
 			}
@@ -35,7 +32,7 @@ export default () => {
 
 			return res.json({
 				message: 'Login successful',
-				token,
+				token
 			})
 		} catch (error) {
 			console.error(error)

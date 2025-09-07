@@ -14,8 +14,8 @@ import AdminUserDetailRouter from './routes/admin/user/detail'
 import AdminUserListRouter from './routes/admin/user/list'
 import AdminUserUpdateRouter from './routes/admin/user/update'
 
-import ExerciseRemoveRouter from './routes/user/exercise/remove'
-import ExerciseTrackRouter from './routes/user/exercise/track'
+import ExerciseRemoveRouter from './routes/user/exercises/remove'
+import ExerciseTrackRouter from './routes/user/exercises/track'
 import ProfileRouter from './routes/user/profile'
 import UsersRouter from './routes/user/users'
 

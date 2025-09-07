@@ -7,7 +7,7 @@ const {
 	User
 } = models
 
-export default async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export default async (req: Request, res: Response, next: NextFunction) => {
     const authToken = req.headers.authorization
 
     if (!authToken) {
@@ -25,12 +25,12 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
 
     const user = await User.findByPk(decoded.id)
     if (!user) {
-        res.status(404).json({ message: 'User not found' })
+        res.status(400).json({ message: 'User not found' })
         return
     }
 
     if (user.role !== 'ADMIN') {
-        res.status(403).json({ message: 'Admin access required' })
+        res.status(400).json({ message: 'Admin access required' })
         return
     }
 

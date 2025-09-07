@@ -21,9 +21,7 @@ export default () => {
 				return res.status(400).json({ message: 'Exercise not found' })
 			}
 
-			return res.json({
-				message: 'Exercise removed successfully'
-			})
+			return res.json({ message: 'Exercise removed successfully' })
 		} catch (error) {
 			console.error(error)
 			return res.status(400).json({ message: 'Internal server error' })		

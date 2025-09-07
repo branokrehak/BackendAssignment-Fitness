@@ -37,8 +37,8 @@ export default () => {
             res.set('Expires', '0')
 
 			return res.json({
-				profile,
-				message: 'Your profile details'
+				message: 'Your profile details',
+				profile
 			})
 		} catch (error) {
 			console.error(error)

@@ -20,8 +20,8 @@ type QueryParams = {
 export default () => {
 	router.get('/', async (req: Request<{}, any, any, QueryParams>, res: Response, _next: NextFunction): Promise<any> => {
 		try {
-			const page = parseInt(req.query.page || '1')
-			const limit = parseInt(req.query.limit || '10')
+			const page = req.query.page as any as number
+			const limit = req.query.limit as any as number
 			const offset = (page - 1) * limit
 
 			const where: { programID?: string, name?: { [Op.iLike]: string } } = {}
@@ -31,7 +31,6 @@ export default () => {
 			}
 
 			if (req.query.search) {
-				// where.name = req.query.search
 				where.name = { [Op.iLike]: `%${req.query.search}%` }
 			}
 	
@@ -45,8 +44,8 @@ export default () => {
 			})
 	
 			return res.json({
-				data: exercises,
-				message: 'List of exercises'
+				message: 'List of exercises',
+				data: exercises
 			})
 		} catch (error) {
 			console.error(error)

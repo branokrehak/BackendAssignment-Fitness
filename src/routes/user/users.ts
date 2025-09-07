@@ -17,8 +17,8 @@ export default () => {
             })
 
 			return res.json({
-				list: users,
-				message: 'List of users'
+				message: 'List of users',
+				list: users
 			})
 		} catch (error) {
 			console.error(error)

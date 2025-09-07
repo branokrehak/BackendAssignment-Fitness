@@ -19,8 +19,8 @@ export default () => {
 			const programs = await Program.findAll()
 			
 			return res.json({
-				data: programs,
-				message: 'List of programs'
+				message: 'List of programs',
+				data: programs
 			})
 		} catch (error) {
 			console.error(error)
